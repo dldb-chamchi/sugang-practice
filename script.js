@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!savedCoursesJSON || savedCoursesJSON === '[]') {
     alert('연습할 과목이 설정되지 않았습니다. 설정 페이지로 이동합니다.');
-    window.location.href = 'setting.html';
+    window.location.href = 'index.html';
     return;
   }
 
