@@ -5,6 +5,10 @@ const tableBody = document.getElementById('pre-register-body');
 const courseCountSpan = document.getElementById('pre-course-count');
 const timerDiv = document.getElementById('timer');
 const resultFooter = document.getElementById('result-footer');
+// ★★★ (추가) 수강신청과목 테이블 body ★★★
+const registeredCoursesBody = document.getElementById(
+  'registered-courses-body'
+);
 
 // --- 게임 상태 변수 ---
 let startTime = 0;
@@ -15,17 +19,14 @@ let gameCourses = []; // 이번 게임에서 사용할 과목 배열
 
 // --- 페이지가 로드되면 즉시 게임 시작 ---
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. 세션 스토리지에서 설정값 불러오기
   const savedCoursesJSON = sessionStorage.getItem('practiceCourses');
 
-  // 2. 설정값이 없으면 설정 페이지로 돌려보냄
   if (!savedCoursesJSON || savedCoursesJSON === '[]') {
     alert('연습할 과목이 설정되지 않았습니다. 설정 페이지로 이동합니다.');
     window.location.href = 'setting.html';
     return;
   }
 
-  // 3. 설정값을 바탕으로 게임 초기화
   const coursesToPlay = JSON.parse(savedCoursesJSON);
   initializeGame(coursesToPlay);
 });
@@ -38,11 +39,13 @@ function initializeGame(coursesToPlay) {
   tableBody.innerHTML = '';
   resultFooter.innerHTML = '';
   timerDiv.textContent = '0.000초';
+  // ★★★ (추가) 수강신청과목 테이블 비우기 ★★★
+  registeredCoursesBody.innerHTML = '';
 
   // 2. 불러온 데이터에 게임 속성 추가
   gameCourses = coursesToPlay.map((course) => ({
     ...course,
-    threshold: Math.random() * 6 + 0.5, // 0.5초 ~ 2.0초 사이 랜덤 마감 시간
+    threshold: Math.random() * 100 + 0.5, // 0.5초 ~ 2.0초 사이 랜덤 마감 시간
     applied: false,
   }));
 
@@ -104,14 +107,16 @@ function applyCourse(course, button, row) {
 
   // 판정
   if (elapsedTime <= course.threshold) {
-    // 성공
+    // --- 성공 ---
     button.textContent = '신청 성공';
     button.classList.add('success');
-    successCount++;
-  } else {
-    // ★★★ 실패 시 알림 창 띄우기 ★★★
-    alert('정원이 초과됐습니다..!');
+    successCount++; // 성공 카운트 증가
 
+    // ★★★ (추가) 성공한 과목을 '수강신청과목' 테이블에 추가 ★★★
+    addCourseToRegisteredList(course);
+  } else {
+    // --- 실패 ---
+    alert('정원이 초과됐습니다..!');
     button.textContent = '정원 초과!';
     button.classList.add('fail');
   }
@@ -127,7 +132,25 @@ function applyCourse(course, button, row) {
   }
 }
 
-/** 4. 게임 종료 함수 */
+/** 4. (신규 추가) 수강신청목록에 과목 추가하는 함수 */
+function addCourseToRegisteredList(course) {
+  // 1. 새 <tr> (행) 생성
+  const row = document.createElement('tr');
+
+  // 2. 행 내용 채우기 (성공 카운트를 No.로 사용)
+  row.innerHTML = `
+        <td>${successCount}</td>
+        <td>${course.subjectType}</td>
+        <td>${course.name}</td>
+        <td>${course.classCode}</td>
+        <td>${course.professor}</td>
+    `;
+
+  // 3. '수강신청과목' 테이블(tbody)에 행 추가
+  registeredCoursesBody.appendChild(row);
+}
+
+/** 5. 게임 종료 함수 (기존 4번) */
 function endGame() {
   clearInterval(gameInterval);
   const finalTime = (performance.now() - startTime) / 1000;

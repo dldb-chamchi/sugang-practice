@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>수강신청 시스템</title>
+    <title>수강신청 시스템 - 게임 시작</title>
     <link rel="stylesheet" href="sugang.css" />
   </head>
   <body>
@@ -31,33 +31,12 @@
         ><select>
           <option>(전체)</option>
         </select>
-        <label>개설과목</label><input type="text" /> <label>학번</label
-        ><input type="text" value="(학번)" disabled /> <label>이름</label
-        ><input type="text" value="(이름)" disabled />
       </div>
 
       <div class="main-grid">
         <div class="panel" id="offered-courses">
-          <div class="panel-header">
-            <h3>개설강좌</h3>
-            <div>
-              <button>시간표/수업계획서</button><button>강의평가</button>
-            </div>
-          </div>
-          <div class="panel-body table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>수강</th>
-                  <th>수강정원</th>
-                  <th>신청인원</th>
-                  <th>교과목명</th>
-                  <th>분반</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
+          <div class="panel-header"><h3>개설강좌</h3></div>
+          <div class="panel-body table-container"></div>
         </div>
 
         <div class="panel" id="pre-reg-courses">
@@ -94,7 +73,20 @@
 
         <div class="panel" id="registered-courses">
           <div class="panel-header"><h3>수강신청과목</h3></div>
-          <div class="panel-body table-container"></div>
+          <div class="panel-body table-container">
+            <table id="registered-courses-table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>이수구분</th>
+                  <th>교과목명</th>
+                  <th>분반</th>
+                  <th>담당교수</th>
+                </tr>
+              </thead>
+              <tbody id="registered-courses-body"></tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
