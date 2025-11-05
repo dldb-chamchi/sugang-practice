@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>수강신청 연습 - 과목 설정</title>
+    <link rel="stylesheet" href="sugang.css" />
+  </head>
+  <body>
+    <div class="container setup-container">
+      <div class="panel">
+        <div class="panel-header"><h3>1. 수강 가능한 강좌</h3></div>
+        <div class="panel-body table-container">
+          <table id="available-courses-table">
+            <thead>
+              <tr>
+                <th>담기</th>
+                <th>교과목명</th>
+                <th>분반</th>
+                <th>담당교수</th>
+                <th>이수구분</th>
+              </tr>
+            </thead>
+            <tbody id="offered-courses-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><h3>2. 연습할 과목 (예비수강)</h3></div>
+        <div class="panel-body table-container">
+          <table id="selected-courses-table">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>교과목명</th>
+                <th>분반</th>
+                <th>이수구분</th>
+              </tr>
+            </thead>
+            <tbody id="selected-courses-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="setup-footer">
+      <button id="start-practice-button" disabled>
+        연습 시작하기 (로그인)
+      </button>
+    </div>
+
+    <script src="setting.js"></script>
+  </body>
+</html>
