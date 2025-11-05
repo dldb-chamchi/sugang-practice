@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>수강신청 시스템</title>
+    <link rel="stylesheet" href="sugang.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="tabs">
+        <button class="tab-btn active">수강신청(장바구니)</button>
+        <button class="tab-btn">조회</button>
+        <button class="tab-btn">도움말</button>
+      </div>
+
+      <div class="filters panel">
+        <label>이수구분</label
+        ><select>
+          <option>(전체)</option>
+        </select>
+        <label>개설학부(과)</label
+        ><select>
+          <option>컴퓨터공학부</option>
+        </select>
+        <label>학년</label
+        ><select>
+          <option>(전체)</option>
+        </select>
+        <label>학기구분</label
+        ><select>
+          <option>(전체)</option>
+        </select>
+        <label>개설과목</label><input type="text" /> <label>학번</label
+        ><input type="text" value="(학번)" disabled /> <label>이름</label
+        ><input type="text" value="(이름)" disabled />
+      </div>
+
+      <div class="main-grid">
+        <div class="panel" id="offered-courses">
+          <div class="panel-header">
+            <h3>개설강좌</h3>
+            <div>
+              <button>시간표/수업계획서</button><button>강의평가</button>
+            </div>
+          </div>
+          <div class="panel-body table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>수강</th>
+                  <th>수강정원</th>
+                  <th>신청인원</th>
+                  <th>교과목명</th>
+                  <th>분반</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel" id="pre-reg-courses">
+          <div class="panel-header">
+            <div>
+              <h3>예비수강과목</h3>
+              <span id="pre-course-count">0 건</span>
+            </div>
+            <h2 id="timer">0.000초</h2>
+          </div>
+          <div class="panel-body table-container">
+            <table id="pre-register-table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>신청</th>
+                  <th>이수구분</th>
+                  <th>교과목명</th>
+                  <th>분반</th>
+                  <th>담당교수</th>
+                  <th>결과(클릭시간)</th>
+                </tr>
+              </thead>
+              <tbody id="pre-register-body"></tbody>
+              <tfoot id="result-footer"></tfoot>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel" id="approval-courses">
+          <div class="panel-header"><h3>승인요청과목</h3></div>
+          <div class="panel-body table-container"></div>
+        </div>
+
+        <div class="panel" id="registered-courses">
+          <div class="panel-header"><h3>수강신청과목</h3></div>
+          <div class="panel-body table-container"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
