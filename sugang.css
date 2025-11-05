@@ -1,0 +1,219 @@
+/* --- sugang.css --- */
+
+/* 기본 설정 */
+body {
+  font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 10px; /* body에 약간의 여백 */
+  font-size: 14px;
+}
+button,
+select,
+input {
+  font-size: 13px;
+}
+.container {
+  width: 100%;
+  max-width: 1700px; /* 스크린샷과 유사한 넓은 레이아웃 */
+  min-width: 1000px;
+  margin: 0 auto; /* 중앙 정렬 */
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* 공통 패널 스타일 */
+.panel {
+  border: 1px solid #bbb;
+  background-color: #fff;
+}
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #e0e8f0; /* 헤더 배경색 */
+  padding: 8px 12px;
+  border-bottom: 1px solid #bbb;
+}
+.panel-header h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+.panel-body {
+  padding: 5px;
+}
+.table-container {
+  height: 280px; /* 테이블 영역 높이 살짝 확보 */
+  overflow-y: auto; /* 내용 많아지면 스크롤 */
+}
+
+/* 1. 탭 */
+.tabs {
+  background-color: #eee;
+  padding: 5px 10px;
+  border-bottom: 1px solid #ccc;
+}
+.tab-btn {
+  padding: 8px 15px;
+  border: 1px solid #bbb;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+.tab-btn.active {
+  background-color: #fff;
+  border-bottom-color: #fff;
+  font-weight: bold;
+}
+
+/* 2. 필터 */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  margin: 10px; /* 필터 영역에 여백 추가 */
+  border: 1px solid #ddd;
+}
+.filters label {
+  font-weight: bold;
+}
+
+/* 3. 메인 그리드 레이아웃 (2x2) */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr; /* 왼쪽을 조금 더 넓게 */
+  grid-template-rows: auto auto; /* 2행 */
+  gap: 15px; /* 패널 사이의 간격 */
+  padding: 0 15px 15px 15px; /* 그리드 전체의 여백 (상단 제외) */
+}
+
+/* 4. 테이블 스타일 */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 6px 8px;
+  text-align: center;
+  white-space: nowrap;
+}
+th {
+  background-color: #f7f7f7;
+  position: sticky; /* 스크롤 시 헤더 고정 */
+  top: 0;
+}
+
+/* 5. 그리드 배치 (스크린샷 기준) */
+#offered-courses {
+  grid-row: 1 / 2;
+  grid-column: 1 / 2; /* 좌상 */
+}
+#pre-reg-courses {
+  grid-row: 1 / 2;
+  grid-column: 2 / 3; /* 우상 */
+}
+#approval-courses {
+  grid-row: 2 / 3;
+  grid-column: 1 / 2; /* 좌하 */
+}
+#registered-courses {
+  grid-row: 2 / 3;
+  grid-column: 2 / 3; /* 우하 */
+}
+
+/* --- (이전 단계에서 추가한 스타일) --- */
+/* 타이머 스타일 */
+#timer {
+  color: #d90429; /* 눈에 띄는 빨간색 */
+  font-size: 1.5rem;
+  margin: 0;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* 신청 버튼 기본 스타일 */
+.apply-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.apply-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+/* 게임 결과 버튼 스타일 */
+.apply-button.success {
+  background-color: #28a745; /* 성공: 초록색 */
+}
+.apply-button.fail {
+  background-color: #dc3545; /* 실패: 빨간색 */
+}
+
+/* 최종 결과 메시지 스타일 */
+#result-footer td {
+  padding: 12px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  background-color: #fffbef;
+  border-top: 2px solid #ffc;
+  border-bottom: 2px solid #ffc;
+}
+
+/* --- setting.html을 위한 스타일 추가 --- */
+.setup-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2열 그리드 */
+  gap: 15px;
+  padding: 15px;
+}
+
+.setup-footer {
+  padding: 20px;
+  text-align: center;
+  background: #f9f9f9;
+  border-top: 1px solid #ddd;
+}
+
+#start-practice-button {
+  background-color: #d90429;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 50%;
+}
+#start-practice-button:hover {
+  background-color: #b00020;
+}
+#start-practice-button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+/* 담기 버튼 스타일 (setting.js에서 사용) */
+.add-to-wishlist-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.add-to-wishlist-btn:disabled {
+  background-color: #aaa;
+  opacity: 0.7;
+  cursor: not-allowed;
+}
