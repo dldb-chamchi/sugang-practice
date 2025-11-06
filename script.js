@@ -7,7 +7,7 @@ if (backToSettingsButton) {
     // (선택 사항: 지우지 않으면, 돌아왔을 때 같은 과목으로 다시 연습 가능)
     // sessionStorage.removeItem('practiceCourses');
 
-    window.location.href = 'index.html';
+    window.location.href = 'setting.html';
   });
 }
 
