@@ -63,7 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /** 3. '연습 시작하기' 버튼 클릭 시 (★ 수정됨) */
 function saveSettingsAndStart() {
-  // 1. 드롭다운에서 선택한 '개수'를 가져옴
   const selectedCount = parseInt(countSelect.value, 10);
 
   if (isNaN(selectedCount) || selectedCount <= 0) {
@@ -71,18 +70,11 @@ function saveSettingsAndStart() {
     return;
   }
 
-  // 2. availableCourses를 무작위로 섞음 (Fisher-Yates Shuffle)
-  // (원본 배열을 수정하지 않기 위해 [...availableCourses]로 복사본 생성)
   const shuffled = [...availableCourses].sort(() => 0.5 - Math.random());
-
-  // 3. 섞인 배열에서 선택한 개수(selectedCount)만큼 잘라냄
-  //    (slice는 selectedCount가 배열 길이보다 커도, 최대 길이까지만 반환)
   const practiceCourses = shuffled.slice(0, selectedCount);
 
-  // 4. 세션 스토리지에 *선택된 과목 객체 배열*을 저장
-  // (script.js가 이 형식을 기대하고 있음)
   sessionStorage.setItem('practiceCourses', JSON.stringify(practiceCourses));
 
-  // 5. 로그인 페이지로 이동
-  window.location.href = 'login.html';
+  // ★★★ 여기가 변경됨 ★★★
+  window.location.href = 'login.html'; // setting.html -> login.html로 이동
 }

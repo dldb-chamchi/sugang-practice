@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>수강신청 연습 - 과목 설정</title>
+    <link rel="stylesheet" href="sugang.css" />
+  </head>
+  <body>
+    <div class="container setup-container">
+      <div class="panel">
+        <div class="panel-body setting-content">
+          <p class="setting-title">과목 개수를 설정하세요</p>
+
+          <div class="setting-row-centered">
+            <label for="course-count-select">과목 개수</label>
+            <select id="course-count-select">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5" selected>5</option>
+              <option value="6">6</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="setup-footer">
+      <button id="start-practice-button">Start</button>
+    </div>
+
+    <script src="setting.js"></script>
+  </body>
+</html>
