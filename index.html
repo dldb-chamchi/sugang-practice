@@ -3,44 +3,84 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>수강신청 연습 - 과목 설정</title>
+    <title>수강신청 연습 - 경고</title>
     <link rel="stylesheet" href="sugang.css" />
+    <style>
+      /* 인라인 스타일로 경고 팝업 디자인 */
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #f0f0f0;
+        margin: 0;
+        font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+      }
+      .warning-card {
+        background-color: white;
+        border: 1px solid #ccc;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        padding: 50px 80px; /* 더 넓은 패딩 */
+        text-align: center;
+        width: 500px; /* 고정 너비 */
+      }
+      .warning-card h1 {
+        font-size: 3.5rem; /* 더 크게 */
+        color: black;
+        margin-bottom: 40px; /* 여백 더 크게 */
+        font-weight: bold;
+        letter-spacing: -2px;
+      }
+      .warning-card p {
+        font-size: 1.5rem; /* 더 크게 */
+        line-height: 1.6;
+        color: #333;
+        margin-bottom: 25px; /* 여백 */
+        word-break: keep-all; /* 단어 단위 줄바꿈 */
+      }
+      .warning-card p:first-of-type {
+        color: #d90429; /* 빨간색 텍스트 */
+        font-weight: bold;
+      }
+      .warning-card button {
+        background-color: #e0e0e0;
+        color: black;
+        border: none;
+        padding: 20px 80px; /* 버튼 패딩 크게 */
+        font-size: 2.2rem; /* 버튼 텍스트 크게 */
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 50px; /* 상단 여백 크게 */
+        transition: background-color 0.2s;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      .warning-card button:hover {
+        background-color: #d0d0d0;
+      }
+    </style>
   </head>
   <body>
-    <div class="container setup-container">
-      <div class="panel">
-        <div class="panel-header"><h3>연습 설정</h3></div>
-        <div
-          class="panel-body"
-          style="height: auto; text-align: center; padding: 40px"
-        >
-          <p style="font-size: 1.1rem">연습에 사용할 과목 개수를 선택하세요.</p>
-
-          <div class="setting-row">
-            <label for="course-count-select">과목 개수:</label>
-            <select id="course-count-select">
-              <option value="1">1개</option>
-              <option value="2">2개</option>
-              <option value="3">3개</option>
-              <option value="4">4개</option>
-              <option value="5" selected>5개</option>
-              <option value="6">6개 (모두)</option>
-            </select>
-          </div>
-
-          <p
-            class="small-note"
-            style="margin-top: 25px; font-size: 0.9rem; color: #777"
-          >
-            * 전체 6개의 과목 풀에서 무작위로 선택됩니다.
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="setup-footer">
-      <button id="start-practice-button">연습 시작하기 (로그인)</button>
+    <div class="warning-card">
+      <h1>타이틀</h1>
+      <p>
+        본 프로그램은 한기대 수강신청
+        <span style="color: #d90429">연습 사이트</span> 입니다
+      </p>
+      <p>
+        사용자가 착각하여 일어난 모든 행위에 대해서<br />개발자는 책임지지
+        않습니다.
+      </p>
+      <button id="confirm-button">확인</button>
     </div>
 
-    <script src="setting.js"></script>
+    <script>
+      document
+        .getElementById('confirm-button')
+        .addEventListener('click', () => {
+          window.location.href = 'setting.html'; // 확인 버튼 클릭 시 setting.html로 이동
+        });
+    </script>
   </body>
 </html>
