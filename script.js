@@ -1,5 +1,16 @@
 // --- script.js (게임 실행 전용) ---
 
+const backToSettingsButton = document.getElementById('back-to-settings-btn');
+if (backToSettingsButton) {
+  backToSettingsButton.addEventListener('click', () => {
+    // 게임 페이지를 떠나기 전에 세션 스토리지의 연습 과목을 지웁니다.
+    // (선택 사항: 지우지 않으면, 돌아왔을 때 같은 과목으로 다시 연습 가능)
+    // sessionStorage.removeItem('practiceCourses');
+
+    window.location.href = 'index.html';
+  });
+}
+
 // --- DOM 요소 가져오기 ---
 const tableBody = document.getElementById('pre-register-body');
 const courseCountSpan = document.getElementById('pre-course-count');
