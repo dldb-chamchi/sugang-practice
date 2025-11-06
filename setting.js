@@ -1,6 +1,4 @@
-// --- setting.js ---
-
-// 1. "개설 강좌" 목록 데이터 (원본)
+// 1. "개설 강좌" 목록 데이터 (원본) - ★ 데이터 풀로 계속 사용
 const availableCourses = [
   {
     id: 1,
@@ -47,83 +45,44 @@ const availableCourses = [
 ];
 
 // --- DOM 요소 ---
-const offeredBody = document.getElementById('offered-courses-body');
-const selectedBody = document.getElementById('selected-courses-body');
 const startButton = document.getElementById('start-practice-button');
+const countSelect = document.getElementById('course-count-select');
 
-// --- 상태 변수 ---
-let wishlistCourses = []; // 사용자가 선택한 과목
+// --- (삭제) 상태 변수 ---
+// let wishlistCourses = []; (필요 없음)
 
 // --- 초기 실행 ---
 document.addEventListener('DOMContentLoaded', () => {
-  loadAvailableCourses();
+  // (삭제) loadAvailableCourses();
+  // 시작 버튼에 이벤트 리스너 연결
   startButton.addEventListener('click', saveSettingsAndStart);
 });
 
-/** 1. 수강 가능한 강좌 목록을 화면에 표시 */
-function loadAvailableCourses() {
-  offeredBody.innerHTML = '';
-  availableCourses.forEach((course) => {
-    const row = document.createElement('tr');
+/** 1. (삭제) loadAvailableCourses() */
+/** 2. (삭제) addCourseToWishlist() */
 
-    const addButton = document.createElement('button');
-    addButton.textContent = '담기';
-    addButton.className = 'add-to-wishlist-btn';
-
-    addButton.addEventListener(
-      'click',
-      () => {
-        addCourseToWishlist(course, addButton);
-      },
-      { once: true }
-    );
-
-    row.innerHTML = `
-            <td class="add-button-cell"></td>
-            <td>${course.name}</td>
-            <td>${course.classCode}</td>
-            <td>${course.professor}</td>
-            <td>${course.subjectType}</td>
-        `;
-
-    row.querySelector('.add-button-cell').appendChild(addButton);
-    offeredBody.appendChild(row);
-  });
-}
-
-/** 2. '담기' 버튼 클릭 시 연습할 과목 목록에 추가 */
-function addCourseToWishlist(course, button) {
-  // 1. 버튼 비활성화
-  button.disabled = true;
-  button.textContent = '추가됨';
-
-  // 2. 선택 목록에 과목 추가
-  wishlistCourses.push(course);
-
-  // 3. '연습할 과목' 테이블에 행 추가
-  const row = document.createElement('tr');
-  row.innerHTML = `
-        <td>${wishlistCourses.length}</td>
-        <td>${course.name}</td>
-        <td>${course.classCode}</td>
-        <td>${course.subjectType}</td>
-    `;
-  selectedBody.appendChild(row);
-
-  // 4. '연습 시작' 버튼 활성화
-  startButton.disabled = false;
-}
-
-/** 3. '연습 시작하기' 버튼 클릭 시 */
+/** 3. '연습 시작하기' 버튼 클릭 시 (★ 수정됨) */
 function saveSettingsAndStart() {
-  if (wishlistCourses.length === 0) {
-    alert('연습할 과목을 1개 이상 선택하세요.');
+  // 1. 드롭다운에서 선택한 '개수'를 가져옴
+  const selectedCount = parseInt(countSelect.value, 10);
+
+  if (isNaN(selectedCount) || selectedCount <= 0) {
+    alert('유효한 과목 개수를 선택하세요.');
     return;
   }
 
-  // ★★★ 세션 스토리지에 선택한 과목 목록을 저장
-  sessionStorage.setItem('practiceCourses', JSON.stringify(wishlistCourses));
+  // 2. availableCourses를 무작위로 섞음 (Fisher-Yates Shuffle)
+  // (원본 배열을 수정하지 않기 위해 [...availableCourses]로 복사본 생성)
+  const shuffled = [...availableCourses].sort(() => 0.5 - Math.random());
 
-  // ★★★ 로그인 페이지로 이동
+  // 3. 섞인 배열에서 선택한 개수(selectedCount)만큼 잘라냄
+  //    (slice는 selectedCount가 배열 길이보다 커도, 최대 길이까지만 반환)
+  const practiceCourses = shuffled.slice(0, selectedCount);
+
+  // 4. 세션 스토리지에 *선택된 과목 객체 배열*을 저장
+  // (script.js가 이 형식을 기대하고 있음)
+  sessionStorage.setItem('practiceCourses', JSON.stringify(practiceCourses));
+
+  // 5. 로그인 페이지로 이동
   window.location.href = 'login.html';
 }
