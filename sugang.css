@@ -170,50 +170,44 @@ th {
 
 /* --- setting.html을 위한 스타일 추가 --- */
 .setup-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* 2열 그리드 */
-  gap: 15px;
+  display: block; /* 2열 그리드(grid) 대신 block으로 변경 */
   padding: 15px;
+  max-width: 800px; /* 너무 넓지 않게 중앙 정렬 */
+  margin: 0 auto;
 }
 
+/* (신규) index.html의 드롭다운 스타일 */
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.setting-row label {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.setting-row select {
+  font-size: 1.1rem;
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-family: inherit; /* body의 폰트 상속 */
+}
+/* --- (여기까지 교체) --- */
+
 .setup-footer {
+  /* (기존 스타일 유지) */
   padding: 20px;
   text-align: center;
   background: #f9f9f9;
   border-top: 1px solid #ddd;
-}
 
-#start-practice-button {
-  background-color: #d90429;
-  color: white;
-  border: none;
-  padding: 15px 30px;
-  font-size: 1.3rem;
-  font-weight: bold;
-  border-radius: 8px;
-  cursor: pointer;
-  width: 50%;
-}
-#start-practice-button:hover {
-  background-color: #b00020;
-}
-#start-practice-button:disabled {
-  background-color: #999;
-  cursor: not-allowed;
-}
-
-/* 담기 버튼 스타일 (setting.js에서 사용) */
-.add-to-wishlist-btn {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-}
-.add-to-wishlist-btn:disabled {
-  background-color: #aaa;
-  opacity: 0.7;
-  cursor: not-allowed;
+  /* (추가) .setup-container와 너비/정렬 맞춤 */
+  max-width: 800px;
+  margin: 0 auto;
+  box-sizing: border-box; /* padding 포함 */
 }

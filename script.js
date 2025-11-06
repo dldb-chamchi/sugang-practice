@@ -45,7 +45,7 @@ function initializeGame(coursesToPlay) {
   // 2. 불러온 데이터에 게임 속성 추가
   gameCourses = coursesToPlay.map((course) => ({
     ...course,
-    threshold: Math.random() * 100 + 0.5, // 0.5초 ~ 2.0초 사이 랜덤 마감 시간
+    threshold: Math.random() * 1 + 0.5, // 0.5초 ~ 2.0초 사이 랜덤 마감 시간
     applied: false,
   }));
 
@@ -108,8 +108,8 @@ function applyCourse(course, button, row) {
   // 판정
   if (elapsedTime <= course.threshold) {
     // --- 성공 ---
-    button.textContent = '신청 성공';
-    button.classList.add('success');
+    // button.textContent = '신청 성공'; // 1. 요청에 따라 텍스트 변경 제거
+    button.classList.add('success'); // (색상 변경은 유지)
     successCount++; // 성공 카운트 증가
 
     // ★★★ (추가) 성공한 과목을 '수강신청과목' 테이블에 추가 ★★★
@@ -117,8 +117,8 @@ function applyCourse(course, button, row) {
   } else {
     // --- 실패 ---
     alert('정원이 초과됐습니다..!');
-    button.textContent = '정원 초과!';
-    button.classList.add('fail');
+    // button.textContent = '정원 초과!'; // 2. 요청에 따라 텍스트 변경 제거
+    button.classList.add('fail'); // (색상 변경은 유지)
   }
 
   // 결과 표시
@@ -126,7 +126,7 @@ function applyCourse(course, button, row) {
     3
   )}초 (컷: ${course.threshold.toFixed(3)}초)`;
 
-  // 모든 과목을 신청했는지 확인
+  // 모든 과목을 신청했는지 확인 (★ 3. 이 로직은 이미 요청대로 동작합니다)
   if (appliedCount === gameCourses.length) {
     endGame();
   }
