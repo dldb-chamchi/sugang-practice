@@ -78,3 +78,27 @@ function saveSettingsAndStart() {
   // ★★★ 여기가 변경됨 ★★★
   window.location.href = 'login.html'; // setting.html -> login.html로 이동
 }
+
+// --- DOM 요소에 난이도 선택 변수 추가 ---
+const difficultySelect = document.getElementById('difficulty-select');
+
+function saveSettingsAndStart() {
+  const selectedCount = parseInt(countSelect.value, 10);
+  // (추가) 난이도 값 가져오기
+  const selectedDifficulty = difficultySelect.value;
+
+  if (isNaN(selectedCount) || selectedCount <= 0) {
+    alert('유효한 과목 개수를 선택하세요.');
+    return;
+  }
+
+  const shuffled = [...availableCourses].sort(() => 0.5 - Math.random());
+  const practiceCourses = shuffled.slice(0, selectedCount);
+
+  sessionStorage.setItem('practiceCourses', JSON.stringify(practiceCourses));
+
+  // (추가) 난이도 저장
+  sessionStorage.setItem('difficulty', selectedDifficulty);
+
+  window.location.href = 'login.html';
+}

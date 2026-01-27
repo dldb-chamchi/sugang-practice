@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -29,6 +29,15 @@
 
     <div class="setup-footer">
       <button id="start-practice-button">Start</button>
+    </div>
+
+    <div class="setting-row-centered">
+      <label for="difficulty-select">난이도</label>
+      <select id="difficulty-select">
+        <option value="easy">Easy (1.0~2.0초)</option>
+        <option value="normal" selected>Normal (1.0~1.5초)</option>
+        <option value="hard">Hard (0.5~1.0초)</option>
+      </select>
     </div>
 
     <script src="setting.js"></script>

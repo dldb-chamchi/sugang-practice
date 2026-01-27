@@ -18,7 +18,7 @@ const timerDiv = document.getElementById('timer');
 const resultFooter = document.getElementById('result-footer');
 // ★★★ (추가) 수강신청과목 테이블 body ★★★
 const registeredCoursesBody = document.getElementById(
-  'registered-courses-body'
+  'registered-courses-body',
 );
 
 // --- 게임 상태 변수 ---
@@ -44,21 +44,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /** 1. 게임 초기화 및 시작 함수 */
 function initializeGame(coursesToPlay) {
-  // 1. 초기화
+  // 1. 초기화 (기존 코드 동일)
   appliedCount = 0;
   successCount = 0;
   tableBody.innerHTML = '';
   resultFooter.innerHTML = '';
   timerDiv.textContent = '0.000초';
-  // ★★★ (추가) 수강신청과목 테이블 비우기 ★★★
   registeredCoursesBody.innerHTML = '';
 
-  // 2. 불러온 데이터에 게임 속성 추가
-  gameCourses = coursesToPlay.map((course) => ({
-    ...course,
-    threshold: Math.random() * 1 + 0.5, // 0.5초 ~ 2.0초 사이 랜덤 마감 시간
-    applied: false,
-  }));
+  // (추가) 난이도 설정 불러오기 (기본값: normal)
+  const difficulty = sessionStorage.getItem('difficulty') || 'normal';
+
+  // 난이도별 최소/최대 시간 설정 (단위: 초)
+  let minTime, maxTime;
+  if (difficulty === 'easy') {
+    // Easy: 1.0 ~ 2.0초 (사용자 예시 10~20)
+    minTime = 10;
+    maxTime = 20;
+  } else if (difficulty === 'hard') {
+    // Hard: 0.5 ~ 1.0초 (사용자 예시 5~10)
+    minTime = 3;
+    maxTime = 5;
+  } else {
+    // Normal: 1.0 ~ 1.5초 (사용자 예시 10~15)
+    minTime = 5;
+    maxTime = 10;
+  }
+
+  // 2. 불러온 데이터에 게임 속성 추가 (threshold 계산 수정)
+  gameCourses = coursesToPlay.map((course) => {
+    // 설정된 범위 내에서 랜덤 시간 생성
+    const randomThreshold = Math.random() * (maxTime - minTime) + minTime;
+
+    return {
+      ...course,
+      threshold: randomThreshold,
+      applied: false,
+    };
+  });
 
   // 3. 과목을 화면 테이블에 표시
   gameCourses.forEach((course, index) => {
@@ -73,7 +96,7 @@ function initializeGame(coursesToPlay) {
       () => {
         applyCourse(course, applyButton, row);
       },
-      { once: true }
+      { once: true },
     );
 
     row.innerHTML = `
@@ -134,7 +157,7 @@ function applyCourse(course, button, row) {
 
   // 결과 표시
   row.querySelector('.result-cell').textContent = `${elapsedTime.toFixed(
-    3
+    3,
   )}초 (컷: ${course.threshold.toFixed(3)}초)`;
 
   // 모든 과목을 신청했는지 확인 (★ 3. 이 로직은 이미 요청대로 동작합니다)
@@ -175,8 +198,8 @@ function endGame() {
                 게임 종료! 총 ${
                   gameCourses.length
                 }개 중 ${successCount}개 성공! (총 시간: ${finalTime.toFixed(
-    3
-  )}초)
+                  3,
+                )}초)
             </td>
         </tr>
     `;
