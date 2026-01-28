@@ -7,29 +7,40 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <!-- 서버 시간 구역 (로그인 카드 밖) -->
+    <div class="server-time-section">
+      <span id="server-time">11:59:55.000</span>
+    </div>
+
+    <!-- 로그인 카드 -->
     <div class="login-card">
+      <!-- 주황/파랑 배너 -->
       <div class="banner-bar">
         <div class="orange"></div>
         <div class="blue"></div>
       </div>
+
+      <!-- 로그인 콘텐츠 -->
       <div class="login-content">
-        <div class="uni-labels">KOREATECH<br />한국기술교육대학교</div>
+        <div class="uni-labels">
+          KOREA<span class="tech-orange">TECH</span><br />한국기술교육대학교
+        </div>
 
         <div class="login-form-box">
-          <div class="server-time-box">
-            <span id="server-time">11:59:55.000</span>
-          </div>
-
           <div class="login-title">수강신청 시스템</div>
 
           <div class="login-fields">
             <div class="input-row">
               <label for="login-id">아이디</label>
-              <input id="login-id" type="text" placeholder="입력x" />
+              <input
+                id="login-id"
+                type="text"
+                placeholder="학번을 입력하세요"
+              />
             </div>
             <div class="input-row">
               <label for="login-pw">비밀번호</label>
-              <input id="login-pw" type="password" placeholder="입력x" />
+              <input id="login-pw" type="password" placeholder="비밀번호" />
               <button class="login-btn" id="login-button">
                 로그인
                 <span class="login-btn-sub">Login</span>
@@ -38,7 +49,7 @@
           </div>
 
           <div class="caps-tip">
-            아이디/ 비밀번호 입력 시 <b>Caps Lock</b> 키를 확인하시길 바랍니다.
+            아이디/ 비밀번호 입력 시 <b>Caps Lock 키를 확인</b>하시길 바랍니다.
           </div>
         </div>
       </div>
