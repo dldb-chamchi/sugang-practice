@@ -1,0 +1,1152 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>수강신청(정정) - 연습</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+        font-size: 12px;
+        background: #f0f0f0;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      /* ── 서버 시간 바 ── */
+      .server-time-bar {
+        background: #222;
+        color: #eee;
+        text-align: center;
+        padding: 4px 0;
+        font-size: 11px;
+        letter-spacing: 1px;
+        flex-shrink: 0;
+      }
+      #server-time {
+        font-size: 1.5rem;
+        font-weight: bold;
+        font-family: 'Courier New', monospace;
+        color: #2ecc71;
+      }
+      #server-time.red {
+        color: #e74c3c;
+      }
+      #server-time.green {
+        color: #2ecc71;
+      }
+
+      /* ── 탭바 ── */
+      .top-tabbar {
+        background: #dce6f0;
+        border-bottom: 1px solid #aab;
+        display: flex;
+        align-items: center;
+        padding: 3px 8px;
+        gap: 4px;
+        flex-shrink: 0;
+      }
+      .top-tab {
+        background: #fff;
+        border: 1px solid #aaa;
+        border-bottom: none;
+        padding: 4px 14px;
+        font-size: 12px;
+        font-weight: bold;
+        border-radius: 4px 4px 0 0;
+      }
+      .back-btn {
+        margin-left: auto;
+        background: #555;
+        color: #fff;
+        border: none;
+        padding: 3px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        font-family: inherit;
+      }
+      .back-btn:hover {
+        background: #333;
+      }
+
+      /* ── 액션바 ── */
+      .action-bar {
+        padding: 5px 10px;
+        background: #f7f7f7;
+        border-bottom: 1px solid #ccc;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        flex-shrink: 0;
+      }
+      .action-btn {
+        border: 1px solid #aaa;
+        background: linear-gradient(to bottom, #fff, #e8e8e8);
+        padding: 3px 12px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 12px;
+        font-family: inherit;
+      }
+      .action-btn:hover {
+        background: linear-gradient(to bottom, #e8f0ff, #d0dcf0);
+      }
+
+      /* ── 필터 ── */
+      .filter-area {
+        padding: 5px 10px;
+        background: #f7f7f7;
+        border-bottom: 1px solid #ccc;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px 14px;
+        align-items: center;
+        flex-shrink: 0;
+      }
+      .filter-area label {
+        color: #333;
+        font-weight: bold;
+        white-space: nowrap;
+      }
+      .filter-area select,
+      .filter-area input {
+        border: 1px solid #bbb;
+        padding: 2px 4px;
+        font-size: 12px;
+        font-family: inherit;
+        min-width: 110px;
+      }
+
+      /* ── 사이드바 + 콘텐츠 래퍼 ── */
+      .body-wrap {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+      }
+
+      /* ── 사이드바 ── */
+      .sidebar {
+        width: 190px;
+        flex-shrink: 0;
+        background: #fff;
+        border-right: 1px solid #ccc;
+        overflow-y: auto;
+        font-size: 12px;
+        display: flex;
+        flex-direction: column;
+      }
+      .sidebar-logo {
+        padding: 8px 10px 6px;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .sidebar-logo .logo-text {
+        font-size: 11px;
+        font-weight: bold;
+        color: #003366;
+        line-height: 1.3;
+      }
+      .sidebar-icons {
+        display: flex;
+        gap: 4px;
+        padding: 4px 8px;
+        border-bottom: 1px solid #ddd;
+      }
+      .sidebar-icons button {
+        border: 1px solid #bbb;
+        background: #f5f5f5;
+        padding: 2px 6px;
+        font-size: 11px;
+        cursor: pointer;
+        border-radius: 2px;
+      }
+      .sidebar-group {
+        border-bottom: 1px solid #eee;
+      }
+      .sidebar-group-title {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 8px;
+        font-weight: bold;
+        color: #003366;
+        background: #f0f4f8;
+        border-bottom: 1px solid #e0e8f0;
+        font-size: 12px;
+      }
+      .sidebar-group-title .folder-icon {
+        font-size: 13px;
+      }
+      .sidebar-item {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 8px 4px 22px;
+        color: #333;
+        cursor: pointer;
+        border-bottom: 1px solid #f5f5f5;
+        font-size: 11px;
+      }
+      .sidebar-item:hover {
+        background: #e8f0ff;
+      }
+      .sidebar-item.active {
+        background: #d0e4f7;
+        color: #003366;
+        font-weight: bold;
+        border-left: 3px solid #336699;
+        padding-left: 19px;
+      }
+      .sidebar-item .star {
+        color: #ccc;
+        font-size: 10px;
+        margin-left: auto;
+      }
+      .sidebar-item.active .star {
+        color: #f8a022;
+      }
+      .sidebar-bottom {
+        margin-top: auto;
+        background: #f0f0f0;
+        border-top: 1px solid #ccc;
+        padding: 5px 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 11px;
+        color: #555;
+      }
+
+      /* ── 콘텐츠 영역 ── */
+      .content-wrap {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      /* ── 메인 그리드 ── */
+      .main-wrap {
+        display: grid;
+        grid-template-columns: 1fr 400px;
+        grid-template-rows: 1fr auto;
+        gap: 6px;
+        padding: 6px;
+        flex: 1;
+        overflow: hidden;
+      }
+
+      .left-col {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        overflow: hidden;
+      }
+
+      /* 패널 */
+      .panel {
+        background: #fff;
+        border: 1px solid #bbb;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .panel-header {
+        background: #dce6f0;
+        border-bottom: 1px solid #bbb;
+        padding: 4px 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-shrink: 0;
+      }
+      .panel-title {
+        font-weight: bold;
+        font-size: 12px;
+        color: #003366;
+        border-left: 3px solid #336699;
+        padding-left: 5px;
+      }
+      .count-badge {
+        font-size: 11px;
+        color: #555;
+      }
+      .header-right {
+        margin-left: auto;
+        display: flex;
+        gap: 4px;
+        align-items: center;
+      }
+      .panel-body {
+        flex: 1;
+        overflow-y: auto;
+      }
+
+      /* 패널 크기 조절 */
+      #panel-gaeseol {
+        flex: 2;
+        min-height: 0;
+      }
+      #panel-seungil {
+        flex: 1;
+        min-height: 0;
+      }
+      #panel-yebi {
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      #panel-sugang {
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* 오른쪽 컬럼 */
+      .right-col {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        overflow: hidden;
+      }
+      .right-col #panel-yebi {
+        flex: 1;
+        min-height: 0;
+      }
+      .right-col #panel-sugang {
+        flex: 1;
+        min-height: 0;
+      }
+
+      /* ── 테이블 ── */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 11px;
+      }
+      th {
+        background: #eef2f8;
+        border: 1px solid #ccc;
+        padding: 3px 5px;
+        text-align: center;
+        white-space: nowrap;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+      td {
+        border: 1px solid #ddd;
+        padding: 2px 5px;
+        text-align: center;
+        white-space: nowrap;
+      }
+      tr:hover td {
+        background: #f0f6ff;
+      }
+
+      /* ── 신청 버튼 ── */
+      .apply-btn {
+        background: linear-gradient(to bottom, #6699cc, #336699);
+        color: white;
+        border: 1px solid #225588;
+        padding: 2px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 11px;
+        font-family: inherit;
+        font-weight: bold;
+      }
+      .apply-btn:hover:not(:disabled) {
+        background: linear-gradient(to bottom, #88aadd, #4477aa);
+      }
+      .apply-btn:disabled {
+        background: #aaa;
+        border-color: #999;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+      .apply-btn.success {
+        background: #28a745;
+        border-color: #1e7e34;
+      }
+      .apply-btn.fail {
+        background: #dc3545;
+        border-color: #b21f2d;
+      }
+
+      /* ── 취소 버튼 ── */
+      .cancel-btn {
+        background: linear-gradient(to bottom, #ee8888, #cc3333);
+        color: white;
+        border: 1px solid #aa2222;
+        padding: 2px 8px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 11px;
+        font-family: inherit;
+      }
+      .cancel-btn:hover:not(:disabled) {
+        background: linear-gradient(to bottom, #ff9999, #dd4444);
+      }
+      .cancel-btn:disabled {
+        background: #ccc;
+        border-color: #bbb;
+        cursor: not-allowed;
+      }
+
+      /* 신청학점 */
+      .credit-box {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .credit-box input {
+        width: 48px;
+        border: 1px solid #bbb;
+        padding: 1px 4px;
+        text-align: right;
+        font-size: 11px;
+        font-family: inherit;
+      }
+
+      tr.cancelled td {
+        text-decoration: line-through;
+        color: #bbb;
+      }
+
+      .result-cell-ok {
+        color: #28a745;
+        font-size: 10px;
+      }
+      .result-cell-fail {
+        color: #dc3545;
+        font-size: 10px;
+      }
+
+      /* ── 결과 모달 ── */
+      #result-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 100;
+        align-items: center;
+        justify-content: center;
+      }
+      #result-overlay.show {
+        display: flex;
+      }
+      #result-modal {
+        background: white;
+        border: 2px solid #336699;
+        border-radius: 8px;
+        padding: 28px 36px;
+        min-width: 420px;
+      }
+      #result-modal h3 {
+        color: #003366;
+        font-size: 1rem;
+        margin-bottom: 14px;
+        border-bottom: 2px solid #dce6f0;
+        padding-bottom: 8px;
+      }
+      #result-modal table {
+        font-size: 12px;
+        margin-bottom: 16px;
+      }
+      #result-modal th {
+        background: #dce6f0;
+      }
+      .modal-close-btn {
+        display: block;
+        margin: 0 auto;
+        background: #336699;
+        color: white;
+        border: none;
+        padding: 8px 32px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 13px;
+        font-family: inherit;
+        font-weight: bold;
+      }
+      .modal-close-btn:hover {
+        background: #225588;
+      }
+      .tag-cancel {
+        color: #888;
+        font-weight: bold;
+      }
+      .tag-success {
+        color: #28a745;
+        font-weight: bold;
+      }
+      .tag-fail {
+        color: #dc3545;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 서버 시간 바 -->
+    <div class="server-time-bar">
+      서버 시간 &nbsp; <span id="server-time">11:59:55.000</span>
+    </div>
+
+    <!-- 탭바 -->
+    <div class="top-tabbar">
+      <div class="top-tab">수강신청(정정) ×</div>
+      <button class="back-btn" onclick="location.href = 'setting.html'">
+        ↩ 설정으로
+      </button>
+    </div>
+
+    <!-- 사이드바 + 콘텐츠 래퍼 -->
+    <div class="body-wrap">
+      <!-- 사이드바 -->
+      <div class="sidebar">
+        <div class="sidebar-logo">
+          <div class="logo-text">
+            KOREA<span style="color: #f8a022">TECH</span
+            ><br />한국기술교육대학교
+          </div>
+        </div>
+        <div class="sidebar-icons">
+          <button>🏠</button>
+          <button>⭐</button>
+          <input
+            type="text"
+            style="
+              flex: 1;
+              border: 1px solid #bbb;
+              padding: 2px 4px;
+              font-size: 11px;
+            "
+          />
+          <button>🔍</button>
+          <button>🔄</button>
+        </div>
+
+        <div class="sidebar-group">
+          <div class="sidebar-group-title">
+            <span class="folder-icon">📁</span>상담
+          </div>
+        </div>
+        <div class="sidebar-group">
+          <div class="sidebar-group-title">
+            <span class="folder-icon">📁</span>교과안내
+          </div>
+        </div>
+        <div class="sidebar-group">
+          <div class="sidebar-group-title">
+            <span class="folder-icon">📁</span>학적기본
+          </div>
+        </div>
+        <div class="sidebar-group">
+          <div class="sidebar-group-title">
+            <span class="folder-icon">📁</span>학적변동
+          </div>
+        </div>
+
+        <div class="sidebar-group">
+          <div class="sidebar-group-title">
+            <span class="folder-icon">📂</span>수강정보
+          </div>
+          <div class="sidebar-item">
+            <span class="item-icon">📄</span>예비수강신청<span class="star"
+              >★</span
+            >
+          </div>
+          <div class="sidebar-item">
+            <span class="item-icon">📄</span>강의계획조회<span class="star"
+              >★</span
+            >
+          </div>
+          <div class="sidebar-item">
+            <span class="item-icon">📄</span>수강지도확인<span class="star"
+              >★</span
+            >
+          </div>
+          <div class="sidebar-item">
+            <span class="item-icon">📄</span>수강강좌조회<span class="star"
+              >★</span
+            >
+          </div>
+          <div class="sidebar-item">
+            <span class="item-icon">📄</span>강의설문<span class="star">★</span>
+          </div>
+          <div class="sidebar-item active">
+            <span class="item-icon">📄</span>수강신청(정정)<span class="star"
+              >★</span
+            >
+          </div>
+          <div class="sidebar-item">
+            <span class="item-icon">📄</span>수강철회신청<span class="star"
+              >★</span
+            >
+          </div>
+          <div class="sidebar-item">
+            <span class="item-icon">📄</span>출석인정신청<span class="star"
+              >★</span
+            >
+          </div>
+          <div class="sidebar-item">
+            <span class="item-icon">📄</span>특별학점신청<span class="star"
+              >★</span
+            >
+          </div>
+        </div>
+
+        <div class="sidebar-group">
+          <div class="sidebar-group-title">
+            <span class="folder-icon">📁</span>계절학기
+          </div>
+        </div>
+        <div class="sidebar-group">
+          <div class="sidebar-group-title">
+            <span class="folder-icon">📁</span>성적조회
+          </div>
+        </div>
+        <div class="sidebar-group">
+          <div class="sidebar-group-title">
+            <span class="folder-icon">📁</span>학생지원
+          </div>
+        </div>
+        <div class="sidebar-group">
+          <div class="sidebar-group-title">
+            <span class="folder-icon">📁</span>장학
+          </div>
+        </div>
+        <div class="sidebar-group">
+          <div class="sidebar-group-title">
+            <span class="folder-icon">📁</span>등록
+          </div>
+        </div>
+        <div class="sidebar-group">
+          <div class="sidebar-group-title">
+            <span class="folder-icon">📁</span>졸업
+          </div>
+        </div>
+        <div class="sidebar-group">
+          <div class="sidebar-group-title">
+            <span class="folder-icon">📁</span>생활관
+          </div>
+        </div>
+        <div class="sidebar-group">
+          <div class="sidebar-group-title">
+            <span class="folder-icon">📁</span>중등교직
+          </div>
+        </div>
+        <div class="sidebar-group">
+          <div class="sidebar-group-title">
+            <span class="folder-icon">📁</span>해외파견
+          </div>
+        </div>
+        <div class="sidebar-group">
+          <div class="sidebar-group-title">
+            <span class="folder-icon">📁</span>어학센터
+          </div>
+        </div>
+        <div class="sidebar-group">
+          <div class="sidebar-group-title">
+            <span class="folder-icon">📁</span>NCS학사
+          </div>
+        </div>
+        <div class="sidebar-group">
+          <div class="sidebar-group-title">
+            <span class="folder-icon">📁</span>강의실예약
+          </div>
+        </div>
+        <div class="sidebar-group">
+          <div class="sidebar-group-title">
+            <span class="folder-icon">📁</span>비교과통합시스템
+          </div>
+        </div>
+        <div class="sidebar-group">
+          <div class="sidebar-group-title">
+            <span class="folder-icon">📁</span>설문종합
+          </div>
+        </div>
+        <div class="sidebar-group">
+          <div class="sidebar-group-title">
+            <span class="folder-icon">📁</span>현장실습
+          </div>
+        </div>
+        <div class="sidebar-group">
+          <div class="sidebar-group-title">
+            <span class="folder-icon">📁</span>KoCoA핵심역량진단
+          </div>
+        </div>
+
+        <div class="sidebar-bottom">
+          <span>🏠</span>
+          <span>⬛</span>
+          <span>📋</span>
+          <span id="sidebar-clock">00:00:00</span>
+          <span>연장</span>
+        </div>
+      </div>
+      <!-- /sidebar -->
+
+      <!-- 콘텐츠 -->
+      <div class="content-wrap">
+        <!-- 액션바 -->
+        <div class="action-bar">
+          <button class="action-btn">🔍 조회</button>
+          <button class="action-btn">❓ 도움말</button>
+        </div>
+
+        <!-- 필터 -->
+        <div class="filter-area">
+          <label>이수구분</label
+          ><select>
+            <option>(전체)</option>
+          </select>
+          <label>개설학부(과)</label
+          ><select>
+            <option>컴퓨터공학부</option>
+          </select>
+          <label>학년도</label
+          ><select>
+            <option>2026</option>
+          </select>
+          <label>학기구분</label
+          ><select>
+            <option>1학기</option>
+          </select>
+          <label>개설과목</label><input type="text" /> <label>학번</label
+          ><input
+            type="text"
+            style="background: #111; color: #111; width: 80px"
+          />
+          <label>이름</label
+          ><input
+            type="text"
+            style="background: #111; color: #111; width: 80px"
+          />
+        </div>
+
+        <!-- 메인 -->
+        <div class="main-wrap">
+          <!-- 왼쪽 -->
+          <div class="left-col">
+            <!-- 개설강좌 -->
+            <div class="panel" id="panel-gaeseol">
+              <div class="panel-header">
+                <span class="panel-title">개설강좌</span>
+                <span class="count-badge" id="gaeseol-count">0 건</span>
+                <div class="header-right">
+                  <button class="action-btn">🗓 시간표외과목</button>
+                  <button class="action-btn">⭐ 강의평가</button>
+                </div>
+              </div>
+              <div class="panel-body">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>수강신청</th>
+                      <th>승인요청</th>
+                      <th>이수구분</th>
+                      <th>교과목명</th>
+                      <th>분반</th>
+                      <th>담당교수</th>
+                      <th>학-강-실-설</th>
+                      <th>수업교시</th>
+                      <th>수강정원</th>
+                      <th>신청인원</th>
+                      <th>승인요청인원</th>
+                      <th>결과</th>
+                    </tr>
+                  </thead>
+                  <tbody id="gaeseol-body"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 승인요청과목 -->
+            <div class="panel" id="panel-seungil">
+              <div class="panel-header">
+                <span class="panel-title">승인요청과목</span>
+              </div>
+              <div class="panel-body">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>취소</th>
+                      <th>요청확인</th>
+                      <th>교과목명</th>
+                      <th>분반</th>
+                      <th>담당교수</th>
+                      <th>수업시간</th>
+                      <th>결재상태</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- /left-col -->
+
+          <!-- 오른쪽 -->
+          <div class="right-col">
+            <!-- 예비수강과목 -->
+            <div class="panel" id="panel-yebi">
+              <div class="panel-header">
+                <span class="panel-title">예비수강과목</span>
+                <span class="count-badge">0 건</span>
+              </div>
+              <div class="panel-body">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>신청</th>
+                      <th>이수구분</th>
+                      <th>교과목명</th>
+                      <th>분반</th>
+                      <th>재이수</th>
+                      <th>학-강-실-설</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- 수강신청과목 -->
+            <div class="panel" id="panel-sugang">
+              <div class="panel-header">
+                <span class="panel-title">수강신청과목</span>
+                <span class="count-badge" id="sugang-count">0 건</span>
+                <div class="header-right credit-box">
+                  신청학점
+                  <input type="text" id="credit-input" value="0" readonly />
+                </div>
+              </div>
+              <div class="panel-body">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>취소</th>
+                      <th>이수구분</th>
+                      <th>교과목명</th>
+                      <th>분반</th>
+                      <th>재이수</th>
+                      <th>학-강-실-설</th>
+                    </tr>
+                  </thead>
+                  <tbody id="sugang-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- /right-col -->
+        </div>
+        <!-- /main-wrap -->
+      </div>
+      <!-- /content-wrap -->
+    </div>
+    <!-- /body-wrap -->
+
+    <!-- 결과 모달 -->
+    <div id="result-overlay">
+      <div id="result-modal">
+        <h3>📋 수강정정 결과</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>구분</th>
+              <th>교과목명</th>
+              <th>처리결과</th>
+              <th>비고</th>
+            </tr>
+          </thead>
+          <tbody id="result-modal-body"></tbody>
+        </table>
+        <button
+          class="modal-close-btn"
+          onclick="
+            document.getElementById('result-overlay').classList.remove('show')
+          "
+        >
+          확인
+        </button>
+      </div>
+    </div>
+
+    <script>
+      // ── 사이드바 시계 ──
+      const sidebarClock = document.getElementById('sidebar-clock');
+      setInterval(() => {
+        const now = new Date();
+        const hh = String(now.getHours()).padStart(2, '0');
+        const mm = String(now.getMinutes()).padStart(2, '0');
+        const ss = String(now.getSeconds()).padStart(2, '0');
+        sidebarClock.textContent = `${hh}:${mm}:${ss}`;
+      }, 1000);
+
+      // ── 세션 데이터 로드 ──
+      const practiceCourses = JSON.parse(
+        sessionStorage.getItem('practiceCourses') || '[]',
+      );
+      const preRegistered = JSON.parse(
+        sessionStorage.getItem('preRegisteredCourses') || '[]',
+      );
+      const difficulty = sessionStorage.getItem('difficulty') || 'normal';
+
+      if (!practiceCourses.length) {
+        alert('설정된 과목이 없습니다. 설정 페이지로 이동합니다.');
+        location.href = 'setting.html';
+      }
+
+      // ── 난이도별 컷타임 ──
+      let minTime, maxTime;
+      if (difficulty === 'easy') {
+        minTime = 10;
+        maxTime = 20;
+      } else if (difficulty === 'hard') {
+        minTime = 3;
+        maxTime = 5;
+      } else {
+        minTime = 5;
+        maxTime = 10;
+      }
+
+      // ── 게임 상태 ──
+      let gameStartTime = 0; // 12시 정각 시점의 performance.now()
+      let gameTimerInterval;
+      let appliedCount = 0;
+      let successCount = 0;
+      let cancelledList = [];
+      let addedList = [];
+      let isLive = false; // 12시 이후 여부
+
+      const gameCourses = practiceCourses.map((c) => ({
+        ...c,
+        threshold: Math.random() * (maxTime - minTime) + minTime,
+        applied: false,
+      }));
+
+      // ── 서버 시간 타이머 ──
+      const COUNTDOWN_SECONDS = 5;
+      const GO_LIVE_TIME_MS = Date.now() + COUNTDOWN_SECONDS * 1000;
+
+      const virtualBase = new Date();
+      virtualBase.setHours(11, 59, 55, 0);
+      const VIRTUAL_BASE_MS = virtualBase.getTime();
+
+      const serverTimeEl = document.getElementById('server-time');
+
+      const clockInterval = setInterval(() => {
+        const now = Date.now();
+        const elapsed = COUNTDOWN_SECONDS * 1000 - (GO_LIVE_TIME_MS - now);
+        const virtualNow = new Date(VIRTUAL_BASE_MS + elapsed);
+
+        const hh = String(virtualNow.getHours()).padStart(2, '0');
+        const mm = String(virtualNow.getMinutes()).padStart(2, '0');
+        const ss = String(virtualNow.getSeconds()).padStart(2, '0');
+        const ms = String(virtualNow.getMilliseconds()).padStart(3, '0');
+        serverTimeEl.textContent = `${hh}:${mm}:${ss}.${ms}`;
+
+        if (virtualNow.getHours() >= 12) {
+          serverTimeEl.className = 'green';
+        } else if (
+          virtualNow.getHours() === 11 &&
+          virtualNow.getMinutes() >= 55
+        ) {
+          serverTimeEl.className = 'red';
+        } else {
+          serverTimeEl.className = '';
+        }
+
+        // 12시 정각 → isLive 활성화
+        if (!isLive && now >= GO_LIVE_TIME_MS) {
+          isLive = true;
+          gameStartTime = performance.now();
+          clearInterval(clockInterval);
+        }
+      }, 50);
+
+      // ── 개설강좌 렌더 ──
+      const gaeseolBody = document.getElementById('gaeseol-body');
+      document.getElementById('gaeseol-count').textContent =
+        gameCourses.length + ' 건';
+
+      gameCourses.forEach((course, idx) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+      <td>${idx + 1}</td>
+      <td class="apply-cell"></td>
+      <td></td>
+      <td>${course.subjectType}</td>
+      <td style="text-align:left">${course.name}</td>
+      <td>${course.classCode}</td>
+      <td>${course.professor}</td>
+      <td>3-3-0-0</td>
+      <td>월3/수3</td>
+      <td>40</td>
+      <td>38</td>
+      <td>0</td>
+      <td class="result-cell"></td>
+    `;
+
+        const btn = document.createElement('button');
+        btn.className = 'apply-btn';
+        btn.textContent = '신청';
+        btn.addEventListener('click', () => applyCourse(course, btn, tr), {
+          once: true,
+        });
+        tr.querySelector('.apply-cell').appendChild(btn);
+
+        gaeseolBody.appendChild(tr);
+      });
+
+      // ── 수강신청과목: 기존 신청 과목 미리 표시 ──
+      const sugangBody = document.getElementById('sugang-body');
+      preRegistered.forEach((c) => addToSugangTable(c));
+      updateSugangCount();
+
+      // ── 신청 처리 ──
+      function applyCourse(course, btn, row) {
+        if (!isLive) {
+          alert('수강정정 기간이 아닙니다.');
+          return;
+        }
+        if (course.applied) return;
+
+        const elapsed = (performance.now() - gameStartTime) / 1000;
+        course.applied = true;
+        appliedCount++;
+        btn.disabled = true;
+
+        const resultCell = row.querySelector('.result-cell');
+
+        if (elapsed <= course.threshold) {
+          btn.classList.add('success');
+          successCount++;
+          addedList.push(course);
+          addToSugangTable(course);
+          updateSugangCount();
+          resultCell.textContent = `✅ ${elapsed.toFixed(3)}s`;
+          resultCell.className = 'result-cell-ok';
+        } else {
+          btn.classList.add('fail');
+          resultCell.textContent = `❌ ${elapsed.toFixed(3)}s (컷: ${course.threshold.toFixed(3)}s)`;
+          resultCell.className = 'result-cell-fail';
+          setTimeout(() => alert('정원이 초과됐습니다..!'), 0);
+        }
+
+        if (appliedCount === gameCourses.length) endGame();
+      }
+
+      // ── 수강신청과목 테이블 추가 ──
+      function addToSugangTable(course) {
+        const tr = document.createElement('tr');
+        tr.dataset.courseId = course.id;
+        tr.innerHTML = `
+      <td class="no-cell">-</td>
+      <td><button class="cancel-btn" onclick="cancelCourse(this, ${course.id})">취소</button></td>
+      <td>${course.subjectType}</td>
+      <td style="text-align:left">${course.name}</td>
+      <td>${course.classCode}</td>
+      <td></td>
+      <td>3-3-0-0</td>
+    `;
+        sugangBody.appendChild(tr);
+        renumberSugang();
+      }
+
+      // ── 취소 ──
+      function cancelCourse(btn, courseId) {
+        if (!confirm('해당 과목을 취소하시겠습니까?')) return;
+        const tr = btn.closest('tr');
+        tr.classList.add('cancelled');
+        btn.disabled = true;
+
+        const found = [...preRegistered, ...addedList].find(
+          (c) => c.id === courseId,
+        );
+        if (found && !cancelledList.find((c) => c.id === courseId))
+          cancelledList.push(found);
+
+        renumberSugang();
+        updateSugangCount();
+      }
+
+      function renumberSugang() {
+        let no = 1;
+        sugangBody.querySelectorAll('tr').forEach((tr) => {
+          tr.querySelector('.no-cell').textContent = tr.classList.contains(
+            'cancelled',
+          )
+            ? '-'
+            : no++;
+        });
+      }
+
+      function updateSugangCount() {
+        const active = sugangBody.querySelectorAll('tr:not(.cancelled)').length;
+        document.getElementById('sugang-count').textContent = active + ' 건';
+        document.getElementById('credit-input').value = active * 3;
+      }
+
+      // ── 게임 종료 ──
+      function endGame() {
+        clearInterval(gameTimerInterval);
+
+        const body = document.getElementById('result-modal-body');
+        body.innerHTML = '';
+
+        cancelledList.forEach((c) => {
+          body.innerHTML += `<tr>
+        <td class="tag-cancel">취소</td><td>${c.name}</td>
+        <td class="tag-cancel">수강 취소됨</td><td>기존 신청 과목</td>
+      </tr>`;
+        });
+
+        addedList.forEach((c) => {
+          if (!cancelledList.find((x) => x.id === c.id)) {
+            body.innerHTML += `<tr>
+          <td class="tag-success">추가</td><td>${c.name}</td>
+          <td class="tag-success">정정 성공</td><td>${c.subjectType}</td>
+        </tr>`;
+          }
+        });
+
+        gameCourses
+          .filter((c) => c.applied && !addedList.find((x) => x.id === c.id))
+          .forEach((c) => {
+            body.innerHTML += `<tr>
+        <td class="tag-fail">실패</td><td>${c.name}</td>
+        <td class="tag-fail">정원 초과</td><td>${c.subjectType}</td>
+      </tr>`;
+          });
+
+        if (!body.children.length) {
+          body.innerHTML =
+            '<tr><td colspan="4" style="color:#888;text-align:center">변동 사항 없음</td></tr>';
+        }
+
+        setTimeout(
+          () => document.getElementById('result-overlay').classList.add('show'),
+          300,
+        );
+      }
+    </script>
+  </body>
+</html>
