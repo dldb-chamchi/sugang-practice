@@ -47,45 +47,17 @@ const availableCourses = [
 // --- DOM 요소 ---
 const startButton = document.getElementById('start-practice-button');
 const countSelect = document.getElementById('course-count-select');
-
-// --- (삭제) 상태 변수 ---
-// let wishlistCourses = []; (필요 없음)
+const difficultySelect = document.getElementById('difficulty-select');
 
 // --- 초기 실행 ---
 document.addEventListener('DOMContentLoaded', () => {
-  // (삭제) loadAvailableCourses();
-  // 시작 버튼에 이벤트 리스너 연결
   startButton.addEventListener('click', saveSettingsAndStart);
 });
 
-/** 1. (삭제) loadAvailableCourses() */
-/** 2. (삭제) addCourseToWishlist() */
-
-/** 3. '연습 시작하기' 버튼 클릭 시 (★ 수정됨) */
 function saveSettingsAndStart() {
   const selectedCount = parseInt(countSelect.value, 10);
-
-  if (isNaN(selectedCount) || selectedCount <= 0) {
-    alert('유효한 과목 개수를 선택하세요.');
-    return;
-  }
-
-  const shuffled = [...availableCourses].sort(() => 0.5 - Math.random());
-  const practiceCourses = shuffled.slice(0, selectedCount);
-
-  sessionStorage.setItem('practiceCourses', JSON.stringify(practiceCourses));
-
-  // ★★★ 여기가 변경됨 ★★★
-  window.location.href = 'login.html'; // setting.html -> login.html로 이동
-}
-
-// --- DOM 요소에 난이도 선택 변수 추가 ---
-const difficultySelect = document.getElementById('difficulty-select');
-
-function saveSettingsAndStart() {
-  const selectedCount = parseInt(countSelect.value, 10);
-  // (추가) 난이도 값 가져오기
   const selectedDifficulty = difficultySelect.value;
+  const gameMode = sessionStorage.getItem('gameMode') || 'sugang';
 
   if (isNaN(selectedCount) || selectedCount <= 0) {
     alert('유효한 과목 개수를 선택하세요.');
@@ -96,9 +68,19 @@ function saveSettingsAndStart() {
   const practiceCourses = shuffled.slice(0, selectedCount);
 
   sessionStorage.setItem('practiceCourses', JSON.stringify(practiceCourses));
-
-  // (추가) 난이도 저장
   sessionStorage.setItem('difficulty', selectedDifficulty);
 
-  window.location.href = 'login.html';
+  if (gameMode === 'jeongjung') {
+    // 정정 모드: 기존 신청 과목으로 남은 과목 중 최대 2개 사용
+    const remaining = shuffled.slice(selectedCount);
+    const preRegistered = remaining.slice(0, Math.min(2, remaining.length));
+    sessionStorage.setItem(
+      'preRegisteredCourses',
+      JSON.stringify(preRegistered),
+    );
+    window.location.href = 'jeongjungPractice.html'; // ← 로그인 없이 바로 이동
+  } else {
+    sessionStorage.removeItem('preRegisteredCourses');
+    window.location.href = 'login.html'; // ← 기존 수강신청 흐름 유지
+  }
 }
