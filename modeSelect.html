@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>한클 - 모드 선택</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
+
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --sugang-color: #2d6a99;
+        --sugang-light: #e8f2fa;
+        --jeongjung-color: #e07b00;
+        --jeongjung-light: #fff3e0;
+        --bg: #f4f6f9;
+        --text: #1a1a2e;
+        --sub: #666;
+        --card-shadow: 0 8px 40px rgba(0,0,0,0.10);
+        --card-hover-shadow: 0 20px 60px rgba(0,0,0,0.18);
+      }
+
+      body {
+        font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+        background: var(--bg);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+      }
+
+      /* 상단 로고 */
+      .logo-area {
+        text-align: center;
+        margin-bottom: 48px;
+        animation: fadeDown 0.5s ease both;
+      }
+      .logo-area .brand {
+        font-size: 3rem;
+        font-weight: 900;
+        color: var(--text);
+        letter-spacing: -2px;
+      }
+      .logo-area .brand span {
+        color: var(--sugang-color);
+      }
+      .logo-area .sub {
+        margin-top: 6px;
+        font-size: 1rem;
+        color: var(--sub);
+        font-weight: 400;
+      }
+
+      /* 카드 래퍼 */
+      .cards {
+        display: flex;
+        gap: 28px;
+        animation: fadeUp 0.55s ease both;
+        animation-delay: 0.1s;
+      }
+
+      /* 카드 공통 */
+      .card {
+        width: 300px;
+        border-radius: 20px;
+        padding: 44px 36px 40px;
+        background: white;
+        box-shadow: var(--card-shadow);
+        cursor: pointer;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        border: 3px solid transparent;
+        transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.2s;
+        position: relative;
+        overflow: hidden;
+      }
+      .card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 5px;
+        border-radius: 20px 20px 0 0;
+        transition: height 0.2s ease;
+      }
+      .card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--card-hover-shadow);
+      }
+      .card:hover::before { height: 7px; }
+      .card:active { transform: translateY(-3px); }
+
+      /* 수강신청 카드 */
+      .card.sugang::before  { background: var(--sugang-color); }
+      .card.sugang:hover    { border-color: var(--sugang-color); }
+      .card.sugang .icon-wrap { background: var(--sugang-light); color: var(--sugang-color); }
+      .card.sugang .card-btn { background: var(--sugang-color); }
+
+      /* 수강정정 카드 */
+      .card.jeongjung::before  { background: var(--jeongjung-color); }
+      .card.jeongjung:hover    { border-color: var(--jeongjung-color); }
+      .card.jeongjung .icon-wrap { background: var(--jeongjung-light); color: var(--jeongjung-color); }
+      .card.jeongjung .card-btn { background: var(--jeongjung-color); }
+
+      .icon-wrap {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.2rem;
+        margin-bottom: 4px;
+        transition: transform 0.2s;
+      }
+      .card:hover .icon-wrap { transform: scale(1.08); }
+
+      .card-title {
+        font-size: 1.5rem;
+        font-weight: 900;
+        color: var(--text);
+        letter-spacing: -1px;
+      }
+      .card-desc {
+        font-size: 0.9rem;
+        color: var(--sub);
+        text-align: center;
+        line-height: 1.6;
+        word-break: keep-all;
+      }
+      .card-btn {
+        margin-top: 8px;
+        width: 100%;
+        padding: 14px 0;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 1rem;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
+        letter-spacing: -0.5px;
+        transition: opacity 0.15s;
+      }
+      .card-btn:hover { opacity: 0.88; }
+
+      /* 애니메이션 */
+      @keyframes fadeDown {
+        from { opacity: 0; transform: translateY(-18px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(22px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      @media (max-width: 680px) {
+        .cards { flex-direction: column; gap: 20px; }
+        .card  { width: 85vw; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="logo-area">
+      <div class="brand">한<span>클</span></div>
+      <div class="sub">한기대 수강신청 연습 시스템</div>
+    </div>
+
+    <div class="cards">
+      <!-- 수강신청 카드 -->
+      <div class="card sugang" onclick="goMode('sugang')">
+        <div class="icon-wrap">📋</div>
+        <div class="card-title">수강신청</div>
+        <div class="card-desc">
+          개강 전 수강신청을<br>연습합니다.<br>빠른 클릭으로 원하는<br>과목을 쟁취하세요!
+        </div>
+        <button class="card-btn">수강신청 연습 시작</button>
+      </div>
+
+      <!-- 수강정정 카드 -->
+      <div class="card jeongjung" onclick="goMode('jeongjung')">
+        <div class="icon-wrap">✏️</div>
+        <div class="card-title">수강정정</div>
+        <div class="card-desc">
+          기존 신청 과목을 취소하고<br>새 과목을 추가하는<br>수강정정을 연습합니다.
+        </div>
+        <button class="card-btn">수강정정 연습 시작</button>
+      </div>
+    </div>
+
+    <script>
+      function goMode(mode) {
+        sessionStorage.setItem('gameMode', mode);
+        window.location.href = 'setting.html';
+      }
+    </script>
+  </body>
+</html>
