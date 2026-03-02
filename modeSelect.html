@@ -7,7 +7,13 @@
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
 
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
       :root {
         --sugang-color: #2d6a99;
@@ -17,8 +23,8 @@
         --bg: #f4f6f9;
         --text: #1a1a2e;
         --sub: #666;
-        --card-shadow: 0 8px 40px rgba(0,0,0,0.10);
-        --card-hover-shadow: 0 20px 60px rgba(0,0,0,0.18);
+        --card-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+        --card-hover-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
       }
 
       body {
@@ -76,14 +82,19 @@
         align-items: center;
         gap: 16px;
         border: 3px solid transparent;
-        transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.2s;
+        transition:
+          transform 0.22s ease,
+          box-shadow 0.22s ease,
+          border-color 0.2s;
         position: relative;
         overflow: hidden;
       }
       .card::before {
         content: '';
         position: absolute;
-        top: 0; left: 0; right: 0;
+        top: 0;
+        left: 0;
+        right: 0;
         height: 5px;
         border-radius: 20px 20px 0 0;
         transition: height 0.2s ease;
@@ -92,20 +103,42 @@
         transform: translateY(-8px);
         box-shadow: var(--card-hover-shadow);
       }
-      .card:hover::before { height: 7px; }
-      .card:active { transform: translateY(-3px); }
+      .card:hover::before {
+        height: 7px;
+      }
+      .card:active {
+        transform: translateY(-3px);
+      }
 
       /* 수강신청 카드 */
-      .card.sugang::before  { background: var(--sugang-color); }
-      .card.sugang:hover    { border-color: var(--sugang-color); }
-      .card.sugang .icon-wrap { background: var(--sugang-light); color: var(--sugang-color); }
-      .card.sugang .card-btn { background: var(--sugang-color); }
+      .card.sugang::before {
+        background: var(--sugang-color);
+      }
+      .card.sugang:hover {
+        border-color: var(--sugang-color);
+      }
+      .card.sugang .icon-wrap {
+        background: var(--sugang-light);
+        color: var(--sugang-color);
+      }
+      .card.sugang .card-btn {
+        background: var(--sugang-color);
+      }
 
       /* 수강정정 카드 */
-      .card.jeongjung::before  { background: var(--jeongjung-color); }
-      .card.jeongjung:hover    { border-color: var(--jeongjung-color); }
-      .card.jeongjung .icon-wrap { background: var(--jeongjung-light); color: var(--jeongjung-color); }
-      .card.jeongjung .card-btn { background: var(--jeongjung-color); }
+      .card.jeongjung::before {
+        background: var(--jeongjung-color);
+      }
+      .card.jeongjung:hover {
+        border-color: var(--jeongjung-color);
+      }
+      .card.jeongjung .icon-wrap {
+        background: var(--jeongjung-light);
+        color: var(--jeongjung-color);
+      }
+      .card.jeongjung .card-btn {
+        background: var(--jeongjung-color);
+      }
 
       .icon-wrap {
         width: 80px;
@@ -118,7 +151,9 @@
         margin-bottom: 4px;
         transition: transform 0.2s;
       }
-      .card:hover .icon-wrap { transform: scale(1.08); }
+      .card:hover .icon-wrap {
+        transform: scale(1.08);
+      }
 
       .card-title {
         font-size: 1.5rem;
@@ -147,23 +182,49 @@
         letter-spacing: -0.5px;
         transition: opacity 0.15s;
       }
-      .card-btn:hover { opacity: 0.88; }
+      .card-btn:hover {
+        opacity: 0.88;
+      }
 
       /* 애니메이션 */
       @keyframes fadeDown {
-        from { opacity: 0; transform: translateY(-18px); }
-        to   { opacity: 1; transform: translateY(0); }
+        from {
+          opacity: 0;
+          transform: translateY(-18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
       @keyframes fadeUp {
-        from { opacity: 0; transform: translateY(22px); }
-        to   { opacity: 1; transform: translateY(0); }
+        from {
+          opacity: 0;
+          transform: translateY(22px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       @media (max-width: 680px) {
-        .cards { flex-direction: column; gap: 20px; }
-        .card  { width: 85vw; }
+        .cards {
+          flex-direction: column;
+          gap: 20px;
+        }
+        .card {
+          width: 85vw;
+        }
       }
     </style>
+    <!-- Cloudflare Web Analytics -->
+    <script
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token": "5251075fb4db4d61a5edd9f065b695ef"}'
+    ></script>
+    <!-- End Cloudflare Web Analytics -->
   </head>
   <body>
     <div class="logo-area">
@@ -177,7 +238,8 @@
         <div class="icon-wrap">📋</div>
         <div class="card-title">수강신청</div>
         <div class="card-desc">
-          개강 전 수강신청을<br>연습합니다.<br>빠른 클릭으로 원하는<br>과목을 쟁취하세요!
+          개강 전 수강신청을<br />연습합니다.<br />빠른 클릭으로 원하는<br />과목을
+          쟁취하세요!
         </div>
         <button class="card-btn">수강신청 연습 시작</button>
       </div>
@@ -187,7 +249,8 @@
         <div class="icon-wrap">✏️</div>
         <div class="card-title">수강정정</div>
         <div class="card-desc">
-          기존 신청 과목을 취소하고<br>새 과목을 추가하는<br>수강정정을 연습합니다.
+          기존 신청 과목을 취소하고<br />새 과목을 추가하는<br />수강정정을
+          연습합니다.
         </div>
         <button class="card-btn">수강정정 연습 시작</button>
       </div>
